@@ -10,6 +10,7 @@ export default {
     }
   },
   mutations: {
+    /* 添加标签 */
     add_tab (state, obj) {
       /* 往标签页数组添加对象 */
       var tab = {}
@@ -22,6 +23,7 @@ export default {
       /* 默认选中 */
       state.activeName = obj.onclickName
     },
+    /* 删除标签 */
     remove_tab (state, onclickName) {
       var i = state.tabList.length
       while (i--) {
@@ -29,6 +31,10 @@ export default {
           var index = state.tabList.indexOf(state.tabList[i])
           if (index > -1) {
             state.tabList.splice(index, 1)
+            if (index === i) {
+              // 删除的tab页是最后个 ，选中最后个
+              state.activeName = state.tabList[i - 1].name
+            }
           }
           return
         }

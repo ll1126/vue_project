@@ -4,6 +4,7 @@ import Home from '@/components/Home'
 import MenuList from '@/components/menuManage/MenuList'
 import PeopleList from '@/components/peopleManage/PeopleList'
 import RoleList from '@/components/roleManage/RoleList'
+import login from '@/components/login'
 
 Vue.use(Router)
 
@@ -13,6 +14,11 @@ export default new Router({
       path: '/',
       name: 'Home',
       component: Home
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: login
     },
     {
       path: '/MenuManage',

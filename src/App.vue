@@ -5,7 +5,7 @@
     <section class="el-container">
       <!-- 左侧导航 -->
       <MyMenu></MyMenu>
-      <section class="el-container is-vertical" style="min-width: 1000px;">
+      <section class="el-container is-vertical" style="min-width: 1000px;min-heigut:500px;">
         <!-- 标签页 -->
         <MyTab></MyTab>
         <main class="el-main">

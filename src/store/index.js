@@ -3,10 +3,9 @@ import vuex from 'vuex'
 
 /* 引入某个store对象 */
 import tabList from './modules/tabList.js'
-import menu from '../components/menuManage/menu.js'
-import people from '../components/peopleManage/people.js'
-import role from '../components/roleManage/role.js'
-import createLogger from 'vuex/dist/logger' // 修改日志
+import menu from './modules/menu.js'
+import people from './modules/people.js'
+import role from './modules/role.js'
 
 Vue.use(vuex)
 export default new vuex.Store({
@@ -15,6 +14,5 @@ export default new vuex.Store({
     menu: menu,
     people: people,
     role: role
-  },
-  plugin: createLogger()
+  }
 })

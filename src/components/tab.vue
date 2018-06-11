@@ -40,23 +40,28 @@ export default {
     }
   },
   methods: {
-    //切换Tab页
+    // 切换Tab页
     handleClick(tab, event) {
+      this.routerPush(tab.name)
+    },
+    // 删除tab
+    removeTab(name) {
+      // 调用store里的 remove_tab 删除标签页
+      this.$store.commit('remove_tab',name)
+      this.routerPush(this.activeName)
+    },
+    // 切换路由
+    routerPush(name) {
       var tabList = this.$store.state.tabList.tabList
       var tabLength = tabList.length
       while (tabLength--) {
-        if (tabList[tabLength].name === tab.name) {
-          //改变路由
+        if (tabList[tabLength].name === name) {
+          // 改变路由
           this.$router.push({path: tabList[tabLength].path});
           return
         }
       }
       return
-    },
-    //删除tab
-    removeTab(name) {
-      //调用store里的 remove_tab 删除标签页
-      this.$store.commit('remove_tab',name)
     }
   }
 }

@@ -32,20 +32,21 @@ export default {
     }
   },
   actions: {
+    /* 点击修改按钮 */
     updatePeople (context, form) {
-      console.log(form)
       /* 编辑框给默认值 */
       context.commit('update_form', form)
       /* 显示弹出框 */
       context.commit('update_peopleDialogFormVisible', true)
     },
+    /* 点击取消按钮 */
     cancel (context) {
       /* 关闭弹出框 */
       context.commit('update_peopleDialogFormVisible', false)
       /* 清空默认值 */
       context.commit('empty')
     },
-    /* 保存 */
+    /* 点击保存按钮 */
     onSubmit (context) {
       /* 保存数据还没写 */
       /* 关闭弹出框 */
