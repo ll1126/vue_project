@@ -13,10 +13,16 @@
           </el-select>
         </el-form-item>
         <el-form-item label="姓名" :label-width="formLabelWidth">
-          <el-input v-model="form.name" auto-complete="off"></el-input>
+          <el-input v-model="form.managerName" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="手机号" :label-width="formLabelWidth">
-          <el-input v-model="form.phone" auto-complete="off"></el-input>
+          <el-input v-model="form.managerPhone" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="性别" :label-width="formLabelWidth">
+          <el-radio-group v-model="form.managerSex">
+            <el-radio :label="0">男</el-radio>
+            <el-radio :label="1">女</el-radio>
+          </el-radio-group>
         </el-form-item>
         <el-form-item label="状态" :label-width="formLabelWidth">
           <el-switch
@@ -41,19 +47,7 @@ export default {
   name: 'addMenu',
   data () {
     return{
-       options: [{
-          value: '1',
-          label: '超级管理员'
-        }, {
-          value: '2',
-          label: '管理员'
-        }, {
-          value: '3',
-          label: '小管理员'
-        }, {
-          value: '4',
-          label: '究极管理员'
-        }],
+      options: [],
       formLabelWidth: '120px'
     }
   },
@@ -76,19 +70,54 @@ export default {
       },
       // setter
       set: function (newValue) {
-         this.$store.state.people.form = newValue;
+         this.$store.state.people.form = newValue
       }
     }
-
+  },
+  // 页面加载完成调用
+  mounted () {
+    // 加载角色下拉数据
+    this.loadRolel()
   },
   methods: {
     /* 确定按钮 */
     onSubmit(){
-      this.$store.dispatch('onSubmit')
+      /* 保存数据 */
+      let params={
+        id: this.$store.state.people.form.id,
+        managerName: this.$store.state.people.form.managerName,
+        managerPhone: this.$store.state.people.form.managerPhone,
+        managerSex: this.$store.state.people.form.managerSex,
+        state: this.$store.state.people.form.state == true?0:1,
+        roleId: this.$store.state.people.form.value,
+        isUpdate: this.$store.state.people.form.isUpdate
+      }
+      var $this = this
+      this.$ajax.insertUser(params).then(res => {
+        if(res.code == 0) {
+          this.$message({
+            message: res.message,
+            type: 'success'
+          });
+          this.$store.dispatch('onSubmit')
+          //重新加载表格数据
+          $this.$parent.loadTableRole()
+        }else{
+          this.$message.error(res.message)
+        }
+      })
+      
     },
     /* 取消 */
     update_peopleDialogFormVisible(state){
       this.$store.dispatch('cancel')
+    },
+    /* 加载可选角色 */
+    loadRolel() {
+      var $this = this
+      this.$ajax.loadRolel(null).then(res => {
+        $this.options = res.content
+      })
     }
 
 

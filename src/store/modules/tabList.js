@@ -1,7 +1,7 @@
 export default {
   /* 顶上标签页 */
   state: {
-    tabList: [{name: '主页', path: '/'}],
+    tabList: [{name: '主页', path: '/Main/Home'}],
     activeName: '主页'
   },
   getters: {
@@ -17,9 +17,13 @@ export default {
       tab.name = obj.onclickName
       tab.path = obj.onclickPath
       /* tab标签页没存在时添加一个 */
+      console.log('选中的标签名字↓')
+      console.log(tab)
       if (!contains(state.tabList, tab)) {
         state.tabList.push(tab)
       }
+      console.log('已打开的标签↓')
+      console.log(state.tabList)
       /* 默认选中 */
       state.activeName = obj.onclickName
     },
@@ -43,7 +47,6 @@ export default {
   },
   actions: {
     switch_dialog (context) { /* 这里的context和我们使用的$store拥有相同的对象和方法 */
-      console.log('actions')
       context.commit('add_tab')
       /* 你还可以在这里触发其他的mutations方法 */
     }

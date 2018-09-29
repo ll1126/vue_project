@@ -1,10 +1,11 @@
 <template>
   <div id="header">
     <!-- 头部 -->
-    <header class="el-header"  style="height: 80px; background-color: rgb(73, 80, 96);">
+    <header class="el-header"  style="height: 80px; background-color: #F5DEB3">
         <span class="header-lang is-active">
-            header
+          后台管理
         </span>
+      
     </header>
   </div>
 </template>

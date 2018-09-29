@@ -15,25 +15,25 @@
         </el-table-column>
         <el-table-column
           fixed="left"
-          prop="roleName"
+          prop="cname"
           label="角色名称"
           width="auto">
         </el-table-column>
         <el-table-column
           fixed="left"
-          prop="createName"
-          label="创建人"
+          prop="cdesc"
+          label="角色描述"
           width="auto">
         </el-table-column>
         <el-table-column
-          prop="createTime"
-          label="创建时间"
-          width="auto">
-        </el-table-column>
-        <el-table-column
-          prop="peopleState"
+          prop="fstate"
           label="状态"
           :formatter="formatterState"
+          width="auto">
+        </el-table-column>
+        <el-table-column
+          prop="tdate"
+          label="最后修改时间"
           width="auto">
         </el-table-column>
         <el-table-column
@@ -55,7 +55,7 @@
           :page-sizes="[10, 20, 30, 40]"
           :page-size="10"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="35">
+          :total="total">
         </el-pagination>
       </div>
     </div>
@@ -74,79 +74,16 @@ export default {
   },
   data () {
     return {
-      tableData: [{
-        id: 1,
-        roleName: '超级管理员',
-        createName: '创建人',
-        phoneNum: '16666666666',
-        createTime: '2018-07-01',
-        peopleState: 0
-      }, {
-        id: 2,
-        roleName: '管理员',
-        createName: '创建人',
-        phoneNum: '16666666666',
-        createTime: '2018-07-01',
-        peopleState: 1
-      }, {
-        id: 3,
-        roleName: '超级管理员',
-        createName: '创建人',
-        phoneNum: '16666666666',
-        createTime: '2018-07-01',
-        peopleState: 1
-      }, {
-        id: 4,
-        roleName: '超级管理员',
-        createName: '创建人',
-        phoneNum: '16666666666',
-        createTime: '2018-07-01',
-        peopleState: 1
-      }, {
-        id: 5,
-        roleName: '超级管理员',
-        createName: '创建人',
-        phoneNum: '16666666666',
-        createTime: '2018-07-01',
-        peopleState: 1
-      }, {
-        id: 6,
-        roleName: '超级管理员',
-        createName: '创建人',
-        phoneNum: '16666666666',
-        createTime: '2018-07-01',
-        peopleState: 1
-      }, {
-        id: 7,
-        roleName: '超级管理员',
-        createName: '创建人',
-        phoneNum: '16666666666',
-        createTime: '2018-07-01',
-        peopleState: 1
-      }, {
-        id: 8,
-        roleName: '超级管理员',
-        createName: '创建人',
-        phoneNum: '16666666666',
-        createTime: '2018-07-01',
-        peopleState: 1
-      }, {
-        id: 9,
-        roleName: '超级管理员',
-        createName: '创建人',
-        phoneNum: '16666666666',
-        createTime: '2018-07-01',
-        peopleState: 1
-      }, {
-        id: 10,
-        roleName: '超级管理员',
-        createName: '创建人',
-        phoneNum: '16666666666',
-        createTime: '2018-07-01',
-        peopleState: 1
-      }],
-      page: 2,
+      tableData: [],
+      page: 1,
+      total: 0,
+      pageSize: 10,
     }
+  },
+  // 页面加载完成调用
+  mounted () {
+    // 加载表格数据
+    this.loadTableRole()
   },
   methods: {
     //每页多少条发生改变时触发
@@ -161,10 +98,37 @@ export default {
     update_roleDialogFormVisible(state){
       this.$store.commit('update_roleDialogFormVisible',state)
     },
+    // 加载表格数据（所有角色）
+    loadTableRole(){
+      let params={
+        pageNum: this.page,
+        pageSize: this.pageSize
+      }
+      var $this = this
+      this.$ajax.loadTableRole(params).then(res => {
+        //表格数据
+        $this.tableData = res.content.pageList
+        //总条数
+        $this.total = res.content.totalRows
+        // console.log(res.content.pageList)
+      })
+    },
     //删除
     delRole(index, row){
-      console.log(index);
-      console.log(row);
+      let params={
+        id: row.id
+      }
+      var $this = this
+      this.$ajax.delRole(params).then(res => {
+        if(res.code==0){
+          this.$message({
+            message: res.message,
+            type: 'success'
+          });
+          //重新加载表格数据
+          $this.loadTableRole()
+        }
+      })
     },
     //编辑
     updateRole(index, row){
@@ -173,10 +137,10 @@ export default {
     },
     //类型转换成字
     formatterState(row, column, cellValue) {
-      if(cellValue==0){
+      if(cellValue == 0){
         return '启用'
       }else{
-        return '禁用'
+        return <span style="color: #F56C6C">禁用</span>
       }
     }
 

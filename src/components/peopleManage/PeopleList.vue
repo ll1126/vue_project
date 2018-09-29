@@ -21,13 +21,19 @@
         </el-table-column>
         <el-table-column
           fixed="left"
-          prop="userName"
+          prop="managerName"
           label="姓名"
           width="auto">
         </el-table-column>
         <el-table-column
-          prop="phoneNum"
+          prop="managerPhone"
           label="手机号"
+          width="auto">
+        </el-table-column>
+        <el-table-column
+          prop="managerSex"
+          label="性别"
+          :formatter="formatterSex"
           width="auto">
         </el-table-column>
         <el-table-column
@@ -36,7 +42,7 @@
           width="auto">
         </el-table-column>
         <el-table-column
-          prop="peopleState"
+          prop="state"
           label="状态"
           :formatter="formatterState"
           width="auto">
@@ -44,10 +50,12 @@
         <el-table-column
           fixed="right"
           label="操作"
-          width="200px">
+          width="300px">
           <template slot-scope="scope">
-            <el-button type="text" @click="delPeople(scope.$index, scope.row)">删除</el-button>
-            <el-button type="text" size="small" @click="updatePeople(scope.$index, scope.row)">编辑</el-button>
+            <el-button type="success" size="small" @click="updateUserState(scope.$index, scope.row)" v-if="scope.row.state === 1">启用</el-button>
+            <el-button type="warning" size="small" @click="updateUserState(scope.$index, scope.row)" v-if="scope.row.state === 0">禁用</el-button>
+            <el-button type="danger" size="small" @click="delPeople(scope.$index, scope.row)">删除</el-button>
+            <el-button type="primary" size="small" @click="updatePeople(scope.$index, scope.row)">编辑</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -79,79 +87,16 @@ export default {
   },
   data () {
     return {
-      tableData: [{
-        id: 1,
-        roleName: '超级管理员',
-        userName: '姓名',
-        phoneNum: '16666666666',
-        createTime: '2018-07-01',
-        peopleState: 0
-      }, {
-        id: 2,
-        roleName: '管理员',
-        userName: '姓名',
-        phoneNum: '16666666666',
-        createTime: '2018-07-01',
-        peopleState: 1
-      }, {
-        id: 3,
-        roleName: '超级管理员',
-        userName: '姓名',
-        phoneNum: '16666666666',
-        createTime: '2018-07-01',
-        peopleState: 1
-      }, {
-        id: 4,
-        roleName: '超级管理员',
-        userName: '姓名',
-        phoneNum: '16666666666',
-        createTime: '2018-07-01',
-        peopleState: 1
-      }, {
-        id: 5,
-        roleName: '超级管理员',
-        userName: '姓名',
-        phoneNum: '16666666666',
-        createTime: '2018-07-01',
-        peopleState: 1
-      }, {
-        id: 6,
-        roleName: '超级管理员',
-        userName: '姓名',
-        phoneNum: '16666666666',
-        createTime: '2018-07-01',
-        peopleState: 1
-      }, {
-        id: 7,
-        roleName: '超级管理员',
-        userName: '姓名',
-        phoneNum: '16666666666',
-        createTime: '2018-07-01',
-        peopleState: 1
-      }, {
-        id: 8,
-        roleName: '超级管理员',
-        userName: '姓名',
-        phoneNum: '16666666666',
-        createTime: '2018-07-01',
-        peopleState: 1
-      }, {
-        id: 9,
-        roleName: '超级管理员',
-        userName: '姓名',
-        phoneNum: '16666666666',
-        createTime: '2018-07-01',
-        peopleState: 1
-      }, {
-        id: 10,
-        roleName: '超级管理员',
-        userName: '姓名',
-        phoneNum: '16666666666',
-        createTime: '2018-07-01',
-        peopleState: 1
-      }],
-      page: 2,
+      tableData: [],
+      page: 1,
+      total: 0,
+      pageSize: 10,
     }
+  },
+  // 页面加载完成调用
+  mounted () {
+    // 加载表格数据
+    this.loadTableRole()
   },
   methods: {
     //每页多少条发生改变时触发
@@ -166,6 +111,20 @@ export default {
     update_peopleDialogFormVisible(state){
       this.$store.commit('update_peopleDialogFormVisible',state)
     },
+    // 加载表格数据（所有角色）
+    loadTableRole () {
+      let params={
+        pageNum: this.page,
+        pageSize: this.pageSize
+      }
+      var $this = this
+      this.$ajax.loadTableUser(params).then(res => {
+        //表格数据
+        $this.tableData = res.content.pageList
+        //总条数
+        $this.total = res.content.totalRows
+      })
+    },
     //删除
     delPeople(index, row){
       console.log(index);
@@ -173,16 +132,52 @@ export default {
     },
     //编辑
     updatePeople(index, row){
-
       this.$store.dispatch('updatePeople',row)
-
+    },
+    // 修改用户状态
+    updateUserState (index, row) {
+      //弹窗提示是否禁用启用
+      var $this = this
+      var mes = row.state==0?'此操作将禁用该用户, 是否继续?':'此操作将启用该用户, 是否继续?'
+      this.$confirm(mes, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          center: true
+      }).then(() => {
+        let params={
+          id: row.id,
+          state: row.state==0?1:0,
+          isUpdate: 1
+        }
+        this.$ajax.insertUser(params).then(res => {
+          $this.loadTableRole()
+          this.$message({
+            type: 'success',
+            message: row.state==0?'禁用成功':'启用成功'
+          });
+        })
+        
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消操作'
+        });
+      });
     },
     //类型转换成字
     formatterState(row, column, cellValue) {
       if(cellValue==0){
         return '启用'
       }else{
-        return '禁用'
+        return <span style="color: #F56C6C">禁用</span>
+      }
+    },
+    formatterSex (row, column, cellValue) {
+      if(cellValue==0){
+        return '男'
+      }else{
+        return '女'
       }
     }
 

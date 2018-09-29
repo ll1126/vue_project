@@ -11,13 +11,7 @@
           fixed="left"
           label="序号"
           type="index"
-          width="50">
-        </el-table-column>
-        <el-table-column
-          fixed="left"
-          prop="menuType"
-          label="菜单类别"
-          width="180px">
+          width="100px">
         </el-table-column>
         <el-table-column
           fixed="left"
@@ -30,7 +24,7 @@
           label="子菜单"
           width="180px">
            <template slot-scope="scope">
-            <el-button type="text" size="small">查看子菜单</el-button>
+            <el-button type="text" size="small" @click="submenu(scope.$index, scope.row)">查看子菜单</el-button>
           </template>
         </el-table-column>
         <el-table-column
@@ -39,33 +33,35 @@
           width="180px">
         </el-table-column>
         <el-table-column
-          prop="menuLcon"
+          prop="clconpic"
           label="图标"
           width="150px">
         </el-table-column>
         <el-table-column
-          prop="menuCreateTime"
+          prop="tdate"
           label="创建时间"
           width="200px">
         </el-table-column>
         <el-table-column
-          prop="menuState"
+          prop="fstate"
           label="状态"
           :formatter="formatterState"
           width="150px">
         </el-table-column>
         <el-table-column
-          prop="menuNum"
+          prop="fsort"
           label="排序"
           width="150px">
         </el-table-column>
         <el-table-column
           fixed="right"
           label="操作"
-          width="200px">
+          width="300px">
           <template slot-scope="scope">
-            <el-button type="text" @click="delMenu(scope.$index, scope.row)">删除</el-button>
-            <el-button type="text" size="small">编辑</el-button>
+            <el-button type="success" size="small" @click="updateMenuState(scope.$index, scope.row)" v-if="scope.row.fstate === 1">启用</el-button>
+            <el-button type="warning" size="small" @click="updateMenuState(scope.$index, scope.row)" v-if="scope.row.fstate === 0">禁用</el-button>
+            <el-button type="danger" size="small" @click="delMenu(scope.$index, scope.row)">删除</el-button>
+            <el-button type="primary" size="small">编辑</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -76,9 +72,9 @@
           @current-change="handleCurrentChange"
           :current-page="page"
           :page-sizes="[10, 20, 30, 40]"
-          :page-size="10"
+          :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="35">
+          :total="total">
         </el-pagination>
       </div>
     </div>
@@ -97,137 +93,137 @@ export default {
   },
   data () {
     return {
-      tableData: [{
-        menuid: 1,
-        menuType: '一级菜单',
-        menuName: '系统管理',
-        menuChildren: '子菜单',
-        menuUrl: 'www.baidu.com',
-        menuLcon: '图标',
-        menuCreateTime: '2018-08-08',
-        menuState: 1,
-        menuNum: 1
-      }, {
-        menuid: 2,
-        menuType: '一级菜单',
-        menuName: '系统管理',
-        menuChildren: '子菜单',
-        menuUrl: 'www.baidu.com',
-        menuLcon: '图标',
-        menuCreateTime: '2018-08-08',
-        menuState: 1,
-        menuNum: 1
-      }, {
-        menuid: 3,
-        menuType: '一级菜单',
-        menuName: '系统管理',
-        menuChildren: '子菜单',
-        menuUrl: 'www.baidu.com',
-        menuLcon: '图标',
-        menuCreateTime: '2018-08-08',
-        menuState: 1,
-        menuNum: 1
-      }, {
-        menuid: 4,
-        menuType: '一级菜单',
-        menuName: '系统管理',
-        menuChildren: '子菜单',
-        menuUrl: 'www.baidu.com',
-        menuLcon: '图标',
-        menuCreateTime: '2018-08-08',
-        menuState: 1,
-        menuNum: 1
-      }, {
-        menuid: 5,
-        menuType: '一级菜单',
-        menuName: '系统管理',
-        menuChildren: '子菜单',
-        menuUrl: 'www.baidu.com',
-        menuLcon: '图标',
-        menuCreateTime: '2018-08-08',
-        menuState: 1,
-        menuNum: 1
-      }, {
-        menuid: 6,
-        menuType: '一级菜单',
-        menuName: '系统管理',
-        menuChildren: '子菜单',
-        menuUrl: 'www.baidu.com',
-        menuLcon: '图标',
-        menuCreateTime: '2018-08-08',
-        menuState: 1,
-        menuNum: 1
-      }, {
-        menuid: 7,
-        menuType: '一级菜单',
-        menuName: '系统管理',
-        menuChildren: '子菜单',
-        menuUrl: 'www.baidu.com',
-        menuLcon: '图标',
-        menuCreateTime: '2018-08-08',
-        menuState: 1,
-        menuNum: 1
-      }, {
-        menuid: 8,
-        menuType: '一级菜单',
-        menuName: '系统管理',
-        menuChildren: '子菜单',
-        menuUrl: 'www.baidu.com',
-        menuLcon: '图标',
-        menuCreateTime: '2018-08-08',
-        menuState: 1,
-        menuNum: 1
-      }, {
-        menuid: 9,
-        menuType: '一级菜单',
-        menuName: '系统管理',
-        menuChildren: '子菜单',
-        menuUrl: 'www.baidu.com',
-        menuLcon: '图标',
-        menuCreateTime: '2018-08-08',
-        menuState: 1,
-        menuNum: 1
-      }, {
-        menuid: 10,
-        menuType: '一级菜单',
-        menuName: '系统管理',
-        menuChildren: '子菜单',
-        menuUrl: 'www.baidu.com',
-        menuLcon: '图标',
-        menuCreateTime: '2018-08-08',
-        menuState: 1,
-        menuNum: 1
-      }],
-      page: 2,
+      tableData: [],
+      page: 1,
+      total: 0,
+      pageSize: 10,
+      parentId: 0,
     }
   },
+  // 页面加载完成调用
+  mounted () {
+    // 加载表格数据
+    this.loadTableMenu(this.parentId)
+  },
   methods: {
-    //每页多少条发生改变时触发
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+    // 每页多少条发生改变时触发
+    handleSizeChange (val) {
+      // 请求接口
+      this.pageSize = val
+      this.loadTableMenu(this.parentId)
+      console.log(`每页 ${val} 条`)
     },
-    //第几页发生改变时触发
-    handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+    // 第几页发生改变时触发
+    handleCurrentChange (val) {
+      // 请求接口
+      this.page = val
+      this.loadTableMenu(this.parentId)
+      console.log(`当前页: ${val}`)
     },
     //点击添加菜单(修改状态位true)
     update_dialogFormVisible(state){
-      this.$store.commit('update_dialogFormVisible',state)
+      var $this = this
+      let params = {
+        state: state,
+        parentId: $this.parentId
+      }
+      this.$store.commit('update_dialogFormVisible', params)
     },
     //删除
-    delMenu(index, row){
-      console.log(index);
-      console.log(row);
+    delMenu (index, row) {
+      var $this = this
+      this.$confirm("确认删除该菜单吗", '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning',
+            center: true
+      }).then(() => {
+        let params = {
+        id: row.id
+        }
+        //访问接口删除菜单
+        this.$ajax.delMenu(params).then(res => {
+          if(res.code === 0) {
+            this.$message({
+              message: '删除成功',
+              type: 'success'
+            });
+            //重新加载表格数据
+            this.loadTableMenu($this.parentId)
+          }else{
+            this.$message.error('系统错误');
+          }
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+      
+      
+    },
+    //查看子菜单
+    submenu(index, row){
+      //替换父节点id
+      this.parentId = row.id
+      //更新表格数据
+      this.loadTableMenu(row.id);
     },
      //类型转换成字
     formatterState(row, column, cellValue) {
       if(cellValue==0){
         return '启用'
       }else{
-        return '禁用'
+        return <span style="color: #F56C6C">禁用</span>
       }
+    },
+    //加载表格数据
+    loadTableMenu(parentId){
+      let params={
+        pageNum: this.page,
+        pageSize: this.pageSize,
+        parentId: parentId
+      }
+      var $this = this
+      this.$ajax.loadTableMenu(params).then(res => {
+        //表格数据
+        $this.tableData = res.content.pageList
+        //总条数
+        $this.total = res.content.totalRows
+        // console.log(res.content.pageList)
+      })
+    },
+    // 修改菜单状态 （启用 / 禁用）
+    updateMenuState(index, row){
+      //弹窗提示是否禁用启用
+      this.$confirm('此操作将禁用该菜单, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          center: true
+      }).then(() => {
+        let params={
+          id: row.id,
+          fstate: row.fstate==0?1:0,
+        }
+        this.$ajax.updateMenuState(params).then(res => {
+          
+          this.$message({
+            type: 'success',
+            message: res.message
+          });
+        })
+        
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消操作'
+        });
+      });
+      
+     
     }
-
   }
 }
 </script>

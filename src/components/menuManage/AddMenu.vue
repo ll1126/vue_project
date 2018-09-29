@@ -1,25 +1,22 @@
 <template>
   <div id='addMenu'>
     <el-dialog title="添加菜单" :visible.sync="dialogFormVisible">
-      <el-form :model="form">
-        <el-form-item label="菜单类别" :label-width="formLabelWidth">
-          <el-input v-model="form.type" auto-complete="off"></el-input>
-        </el-form-item>
+      <el-form :model="menu">
         <el-form-item label="菜单名称" :label-width="formLabelWidth">
-          <el-input v-model="form.name" auto-complete="off"></el-input>
+          <el-input v-model="menu.menuName" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="链接地址" :label-width="formLabelWidth">
-          <el-input v-model="form.url" auto-complete="off"></el-input>
+          <el-input v-model="menu.menuUrl" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="图标" :label-width="formLabelWidth">
-          <el-input v-model="form.lcon" auto-complete="off"></el-input>
+          <el-input v-model="menu.clconpic" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="排序" :label-width="formLabelWidth">
-          <el-input v-model="form.num" auto-complete="off"></el-input>
+          <el-input v-model="menu.fsort" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="状态" :label-width="formLabelWidth">
           <el-switch
-          v-model="form.state"
+          v-model="menu.fstate === 0"
           active-color="#13ce66"
           inactive-color="#ff4949"
           active-text="启用"
@@ -41,13 +38,13 @@ export default {
   name: 'addMenu',
   data () {
     return{
-      form: {
-        type: '',
-        name: '',
-        url: '',
-        lcon: '',
-        num: '',
-        state: true,
+      menu: {
+        menuName: '',
+        menuUrl: '',
+        clconpic: '',
+        fsort: '',
+        fstate: 0,
+        fpartentid: 0
       },
       formLabelWidth: '120px'
     }
@@ -63,15 +60,40 @@ export default {
       set: function (newValue) {
           this.$store.state.menu.dialogFormVisible = newValue;
       }
-    },
-
+    }
   },
   methods: {
-    //修改store仓库的 dialogFormVisible 的值
-    update_dialogFormVisible(state){
-      this.$store.commit('update_dialogFormVisible',state)
+    // 修改store仓库的 dialogFormVisible 的值
+    update_dialogFormVisible (state) {
+      var $this = this
+      // 赋值 父节点id
+      $this.menu.fpartentid = this.$store.state.menu.fpartentid
+      // 访问接口保存数据
+      this.$ajax.insertMenu($this.menu).then(res => {
+        if (res.code === 0) {
+          this.$message({
+            message: '保存成功',
+            type: 'success'
+          });
+          // 隐藏窗口
+          $this.$store.commit('update_dialogFormVisible',{state: state})
+          // 重新加载表格数据
+          $this.$parent.loadTableMenu($this.menu.fpartentid)
+          // 清空之前数据
+          $this.empty()
+        } else {
+          this.$message.error('系统错误')
+        }
+      })
+    },
+    // 清空值
+    empty () {
+      this.menu.menuName = ''
+      this.menu.menuUrl = ''
+      this.menu.clconpic = ''
+      this.menu.fsort = ''
+      this.menu.fstate = 0
     }
-
   }
 }
 </script>

@@ -5,10 +5,13 @@ export default {
     peopleDialogFormVisible: false,
     /* 弹出框数据 */
     form: {
-      name: '',
-      phone: '',
+      id: '',
+      managerName: '',
+      managerPhone: '',
+      managerSex: 0,
       state: true,
-      value: ''
+      value: '',
+      isUpdate: 0
     }
   },
   mutations: {
@@ -18,17 +21,24 @@ export default {
     },
     /* 编辑框给默认值 */
     update_form (state, form) {
-      state.form.name = form.userName
-      state.form.phone = form.phoneNum
-      state.form.state = form.peopleState === 0
+      state.form.id = form.id,
+      state.form.managerName = form.managerName
+      state.form.managerPhone = form.managerPhone
+      state.form.managerSex = form.managerSex
+      state.form.state = form.state === 0
       state.form.value = form.roleName
+      /* isUpdate:0 新增  1： 修改 */
+      state.form.isUpdate = 1
     },
     /* 清空默认值 */
     empty (state) {
-      state.form.name = ''
-      state.form.phone = ''
+      state.form.id = '',
+      state.form.managerName = ''
+      state.form.managerPhone = ''
+      state.form.managerSex = 0
       state.form.state = true
       state.form.value = ''
+      state.form.isUpdate = 0
     }
   },
   actions: {
@@ -48,7 +58,6 @@ export default {
     },
     /* 点击保存按钮 */
     onSubmit (context) {
-      /* 保存数据还没写 */
       /* 关闭弹出框 */
       context.commit('update_peopleDialogFormVisible', false)
       /* 清空默认值 */

@@ -19,6 +19,7 @@
             :data="form.menudata"
             show-checkbox
             node-key="id"
+            ref="menuTree"
             :default-expanded-keys="[2, 3]"
             :default-checked-keys="[5]"
             :props="defaultProps">
@@ -69,14 +70,54 @@ export default {
     }
 
   },
+  // 页面加载完成调用
+  mounted () {
+    // 加载表格数据
+    this.loadRoleMenu()
+  },
   methods: {
     /* 确定按钮 */
-    onSubmit(){
-      this.$store.dispatch('onSubmit')
+    onSubmit() {
+      // 选中的key组成的数组
+      var a = this.$refs.menuTree.getCheckedKeys()
+      // 半选中的key组成的数组（一般为父节点）
+      var b = this.$refs.menuTree.getHalfCheckedKeys()
+      // 合并后的数组(字符串， 用 ',' 拼接)
+      var c = a.concat(b).join(',')
+      /* 保存数据还没写 */
+      let params = {
+        // 角色名字
+        cname: this.$store.state.role.form.rolename,
+        // 选中的菜单id（字符串，用 ',' 拼接）
+        checkMenu: c,
+        // 是否启用 0：启用 1：禁用
+        fstate: this.$store.state.role.form.state == true?0:1
+      }
+      //访问接口
+      this.$ajax.insertRole(params).then(res => {
+        if (res.code == 0) {
+          this.$message({
+            message: res.message,
+            type: 'success'
+          });
+          this.$store.dispatch('onSubmit')
+          // 重新加载外面表格数据
+          this.$parent.loadTableRole()
+          // 不知道为什么，添加完第一次后菜单节点就没有了，重新调用加载数据
+          this.loadRoleMenu()
+        }
+      })
+      
     },
     /* 取消 */
-    update_peopleDialogFormVisible(state){
+    update_peopleDialogFormVisible(state) {
       this.$store.dispatch('cancel')
+    },
+    /* 加载所有菜单节点 */
+    loadRoleMenu() {
+      this.$ajax.loadRoleMenu('').then(res => {
+        this.$store.dispatch('loadMenu', res.content)
+      })
     }
 
 

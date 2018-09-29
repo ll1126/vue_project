@@ -1,7 +1,7 @@
 <template>
   <div id="Home">
     <span>
-      首页
+      首页 - Welcome
     </span>
   </div>
 </template>

@@ -57,6 +57,8 @@ export default {
       while (tabLength--) {
         if (tabList[tabLength].name === name) {
           // 改变路由
+          console.log('改变路由后的路径↓')
+          console.log(tabList[tabLength].path)
           this.$router.push({path: tabList[tabLength].path});
           return
         }
