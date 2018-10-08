@@ -81,11 +81,11 @@ export default {
     login () {
         var userName = this.loginForm.userName
         var userPass = this.loginForm.userPass
-        if(userName == ''){
+        if (userName == '') {
             this.$message.error('请输入账号')
             return false
         }
-        if(userPass == ''){
+        if (userPass == '') {
             this.$message.error('请输入密码')
             return false
         }

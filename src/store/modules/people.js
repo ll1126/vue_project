@@ -20,13 +20,13 @@ export default {
       state.peopleDialogFormVisible = formState
     },
     /* 编辑框给默认值 */
-    update_form (state, form) {
+    update_people_form (state, form) {
       state.form.id = form.id,
       state.form.managerName = form.managerName
       state.form.managerPhone = form.managerPhone
       state.form.managerSex = form.managerSex
       state.form.state = form.state === 0
-      state.form.value = form.roleName
+      state.form.value = form.roleId
       /* isUpdate:0 新增  1： 修改 */
       state.form.isUpdate = 1
     },
@@ -45,7 +45,7 @@ export default {
     /* 点击修改按钮 */
     updatePeople (context, form) {
       /* 编辑框给默认值 */
-      context.commit('update_form', form)
+      context.commit('update_people_form', form)
       /* 显示弹出框 */
       context.commit('update_peopleDialogFormVisible', true)
     },

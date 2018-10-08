@@ -49,7 +49,7 @@ export default {
   },
   methods: {
     // 点击二级导航时
-    handelMenu(item){
+    handelMenu (item) {
       // 调用store里的 add_tab 增加标签页
       // 第一个参数是方法名，第二个参数是你要传过去的参数(json格式)
       this.$store.commit('add_tab',{onclickName: item.menuName,onclickPath: item.menuUrl})
@@ -57,8 +57,8 @@ export default {
       this.$router.push({path: item.menuUrl})
     },
     //加载左侧导航
-    loadMenu() {
-      let params={
+    loadMenu () {
+      let params = {
       }
       var $this = this
       this.$ajax.loadMenu(params).then(res => {

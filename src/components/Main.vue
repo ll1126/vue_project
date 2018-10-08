@@ -21,13 +21,13 @@
 </template>
 
 <script>
-import MyHeader from '@/components/Header'  //引入头部组件
-import MyMenu from '@/components/Menu'  //引入左侧导航组件
-import MyTab from '@/components/tab'  //引入标签页组件
+import MyHeader from '@/components/Header'  // 引入头部组件
+import MyMenu from '@/components/Menu'  // 引入左侧导航组件
+import MyTab from '@/components/tab'  // 引入标签页组件
 
 
 export default {
-  //注册组件
+  // 注册组件
   components: {
     MyHeader,
     MyMenu,

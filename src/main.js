@@ -16,7 +16,7 @@ Vue.use(ElementUI)
 Vue.config.productionTip = false
 Vue.prototype.$ajax = api
 
-new Vue({
+var vue = new Vue({
   el: '#app',
   router, /* 路由 */
   api,

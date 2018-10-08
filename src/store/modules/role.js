@@ -5,10 +5,13 @@ export default {
     roleDialogFormVisible: false,
     /* 弹出框数据 */
     form: {
+      id: '',
       rolename: '',
       state: true,
       value: '',
-      menudata: []
+      menudata: [],
+      checkmenudata: [],
+      isUpdate: 0
     }
   },
   mutations: {
@@ -17,14 +20,22 @@ export default {
       state.roleDialogFormVisible = formState
     },
     /* 编辑框给默认值 */
-    update_form (state, form) {
-      state.form.state = form.peopleState === 0
+    update_role_form (state, form) {
+      state.form.id = form.id
+      state.form.rolename = form.cname
+      state.form.state = form.fstate === 0
       state.form.value = form.roleName
+      state.form.checkmenudata = form.menuData.split(",")
+      /* isUpdate:0 新增  1： 修改 */
+      state.form.isUpdate = 1
     },
     /* 清空默认值 */
     empty (state) {
+      state.form.id = ''
       state.form.rolename = ''
       state.form.state = true
+      state.form.value = ''
+      state.form.checkmenudata = []
     },
     /* 加载菜单节点 */
     loadMenu (state, menudata) {
@@ -34,7 +45,7 @@ export default {
   actions: {
     updateRole (context, form) {
       /* 编辑框给默认值 */
-      context.commit('update_form', form)
+      context.commit('update_role_form', form)
       /* 显示弹出框 */
       context.commit('update_roleDialogFormVisible', true)
     },

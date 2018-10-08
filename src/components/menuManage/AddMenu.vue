@@ -16,7 +16,7 @@
         </el-form-item>
         <el-form-item label="状态" :label-width="formLabelWidth">
           <el-switch
-          v-model="menu.fstate === 0"
+          v-model="menu.fstate == 0"
           active-color="#13ce66"
           inactive-color="#ff4949"
           active-text="启用"
@@ -37,7 +37,7 @@
 export default {
   name: 'addMenu',
   data () {
-    return{
+    return {
       menu: {
         menuName: '',
         menuUrl: '',
@@ -49,8 +49,8 @@ export default {
       formLabelWidth: '120px'
     }
   },
-  //检测到数据发生变动时就会执行对相应数据有引用的函数
-  computed:{
+  // 检测到数据发生变动时就会执行对相应数据有引用的函数
+  computed: {
     dialogFormVisible: {
       // getter
       get () {
@@ -58,7 +58,7 @@ export default {
       },
       // setter
       set: function (newValue) {
-          this.$store.state.menu.dialogFormVisible = newValue;
+          this.$store.state.menu.dialogFormVisible = newValue
       }
     }
   },
@@ -74,9 +74,9 @@ export default {
           this.$message({
             message: '保存成功',
             type: 'success'
-          });
+          })
           // 隐藏窗口
-          $this.$store.commit('update_dialogFormVisible',{state: state})
+          $this.$store.commit('update_dialogFormVisible', {state: state})
           // 重新加载表格数据
           $this.$parent.loadTableMenu($this.menu.fpartentid)
           // 清空之前数据

@@ -51,7 +51,7 @@ export default {
       formLabelWidth: '120px'
     }
   },
-  //检测到数据发生变动时就会执行对相应数据有引用的函数
+  // 检测到数据发生变动时就会执行对相应数据有引用的函数
   computed:{
     peopleDialogFormVisible: {
       // getter
@@ -81,39 +81,39 @@ export default {
   },
   methods: {
     /* 确定按钮 */
-    onSubmit(){
+    onSubmit () {
       /* 保存数据 */
-      let params={
+      let params = {
         id: this.$store.state.people.form.id,
         managerName: this.$store.state.people.form.managerName,
         managerPhone: this.$store.state.people.form.managerPhone,
         managerSex: this.$store.state.people.form.managerSex,
-        state: this.$store.state.people.form.state == true?0:1,
+        state: this.$store.state.people.form.state == true ? 0:1,
         roleId: this.$store.state.people.form.value,
         isUpdate: this.$store.state.people.form.isUpdate
       }
       var $this = this
       this.$ajax.insertUser(params).then(res => {
-        if(res.code == 0) {
+        if (res.code == 0) {
           this.$message({
             message: res.message,
             type: 'success'
           });
           this.$store.dispatch('onSubmit')
-          //重新加载表格数据
+          // 重新加载表格数据
           $this.$parent.loadTableRole()
-        }else{
+        } else {
           this.$message.error(res.message)
         }
       })
       
     },
     /* 取消 */
-    update_peopleDialogFormVisible(state){
+    update_peopleDialogFormVisible (state) {
       this.$store.dispatch('cancel')
     },
     /* 加载可选角色 */
-    loadRolel() {
+    loadRolel () {
       var $this = this
       this.$ajax.loadRolel(null).then(res => {
         $this.options = res.content

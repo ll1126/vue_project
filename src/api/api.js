@@ -34,6 +34,10 @@ export default {
     delRole (params) {
         return get ('/role/delRole', params)
     },
+    // 角色页 -- 启用 / 禁用 / 编辑角色
+    updateRole (params) {
+        return post ('/role/updateRole', params)
+    },
     // 添加角色页 -- 加载所有菜单节点
     loadRoleMenu (params) {
         return post ('/menu/selectMenuForRole', params)
@@ -42,6 +46,7 @@ export default {
     insertRole (params) {
         return post ('/role/insertRole', params)
     },
+    
     // 用户页 -- 加载表格
     loadTableUser (params) {
         return get ('/user/selUserList', params)
@@ -53,6 +58,8 @@ export default {
     // 添加用户页 -- 加载可选角色
     loadRolel (params) {
         return get ('/role/loadRole', params)
-    }
+    },
+    
+
 
 }

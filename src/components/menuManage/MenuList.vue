@@ -58,8 +58,8 @@
           label="操作"
           width="300px">
           <template slot-scope="scope">
-            <el-button type="success" size="small" @click="updateMenuState(scope.$index, scope.row)" v-if="scope.row.fstate === 1">启用</el-button>
-            <el-button type="warning" size="small" @click="updateMenuState(scope.$index, scope.row)" v-if="scope.row.fstate === 0">禁用</el-button>
+            <el-button type="success" size="small" @click="updateMenuState(scope.$index, scope.row)" v-if="scope.row.fstate == 1">启用</el-button>
+            <el-button type="warning" size="small" @click="updateMenuState(scope.$index, scope.row)" v-if="scope.row.fstate == 0">禁用</el-button>
             <el-button type="danger" size="small" @click="delMenu(scope.$index, scope.row)">删除</el-button>
             <el-button type="primary" size="small">编辑</el-button>
           </template>
@@ -84,11 +84,11 @@
 </template>
 
 <script>
-import addMenu from './AddMenu'  //引入组件
+import addMenu from './AddMenu'  // 引入组件
 
 export default {
   name: 'menuList',
-  components: {   //注册组件
+  components: {   // 注册组件
     addMenu
   },
   data () {
@@ -120,8 +120,8 @@ export default {
       this.loadTableMenu(this.parentId)
       console.log(`当前页: ${val}`)
     },
-    //点击添加菜单(修改状态位true)
-    update_dialogFormVisible(state){
+    // 点击添加菜单(修改状态位true)
+    update_dialogFormVisible(state) {
       var $this = this
       let params = {
         state: state,
@@ -129,7 +129,7 @@ export default {
       }
       this.$store.commit('update_dialogFormVisible', params)
     },
-    //删除
+    // 删除
     delMenu (index, row) {
       var $this = this
       this.$confirm("确认删除该菜单吗", '提示', {
@@ -141,14 +141,14 @@ export default {
         let params = {
         id: row.id
         }
-        //访问接口删除菜单
+        // 访问接口删除菜单
         this.$ajax.delMenu(params).then(res => {
-          if(res.code === 0) {
+          if(res.code == 0) {
             this.$message({
               message: '删除成功',
               type: 'success'
             });
-            //重新加载表格数据
+            // 重新加载表格数据
             this.loadTableMenu($this.parentId)
           }else{
             this.$message.error('系统错误');
@@ -163,47 +163,47 @@ export default {
       
       
     },
-    //查看子菜单
-    submenu(index, row){
-      //替换父节点id
+    // 查看子菜单
+    submenu(index, row) {
+      // 替换父节点id
       this.parentId = row.id
-      //更新表格数据
+      // 更新表格数据
       this.loadTableMenu(row.id);
     },
-     //类型转换成字
+     // 类型转换成字
     formatterState(row, column, cellValue) {
-      if(cellValue==0){
+      if (cellValue == 0) {
         return '启用'
-      }else{
+      } else {
         return <span style="color: #F56C6C">禁用</span>
       }
     },
-    //加载表格数据
-    loadTableMenu(parentId){
-      let params={
+    // 加载表格数据
+    loadTableMenu(parentId) {
+      let params = {
         pageNum: this.page,
         pageSize: this.pageSize,
         parentId: parentId
       }
       var $this = this
       this.$ajax.loadTableMenu(params).then(res => {
-        //表格数据
+        // 表格数据
         $this.tableData = res.content.pageList
-        //总条数
+        // 总条数
         $this.total = res.content.totalRows
         // console.log(res.content.pageList)
       })
     },
     // 修改菜单状态 （启用 / 禁用）
-    updateMenuState(index, row){
-      //弹窗提示是否禁用启用
+    updateMenuState(index, row) {
+      // 弹窗提示是否禁用启用
       this.$confirm('此操作将禁用该菜单, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning',
           center: true
       }).then(() => {
-        let params={
+        let params = {
           id: row.id,
           fstate: row.fstate==0?1:0,
         }

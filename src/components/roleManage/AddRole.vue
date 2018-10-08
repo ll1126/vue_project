@@ -20,8 +20,8 @@
             show-checkbox
             node-key="id"
             ref="menuTree"
-            :default-expanded-keys="[2, 3]"
-            :default-checked-keys="[5]"
+            :default-expanded-keys="[1, 1]"
+            :default-checked-keys="form.checkmenudata"
             :props="defaultProps">
           </el-tree>
         </el-form-item>
@@ -46,8 +46,8 @@ export default {
       }
     }
   },
-  //检测到数据发生变动时就会执行对相应数据有引用的函数
-  computed:{
+  // 检测到数据发生变动时就会执行对相应数据有引用的函数
+  computed: {
     roleDialogFormVisible: {
       // getter
       get () {
@@ -55,7 +55,7 @@ export default {
       },
       // setter
       set: function (newValue) {
-         this.$store.state.role.roleDialogFormVisible = newValue;
+         this.$store.state.role.roleDialogFormVisible = newValue
       }
     },
     form: {
@@ -77,21 +77,22 @@ export default {
   },
   methods: {
     /* 确定按钮 */
-    onSubmit() {
+    onSubmit () {
       // 选中的key组成的数组
       var a = this.$refs.menuTree.getCheckedKeys()
       // 半选中的key组成的数组（一般为父节点）
       var b = this.$refs.menuTree.getHalfCheckedKeys()
       // 合并后的数组(字符串， 用 ',' 拼接)
       var c = a.concat(b).join(',')
-      /* 保存数据还没写 */
       let params = {
+        id: this.$store.state.role.form.id,
         // 角色名字
         cname: this.$store.state.role.form.rolename,
         // 选中的菜单id（字符串，用 ',' 拼接）
         checkMenu: c,
         // 是否启用 0：启用 1：禁用
-        fstate: this.$store.state.role.form.state == true?0:1
+        fstate: this.$store.state.role.form.state == true ? 0:1,
+        isUpdate: this.$store.state.role.form.isUpdate
       }
       //访问接口
       this.$ajax.insertRole(params).then(res => {
@@ -103,24 +104,23 @@ export default {
           this.$store.dispatch('onSubmit')
           // 重新加载外面表格数据
           this.$parent.loadTableRole()
-          // 不知道为什么，添加完第一次后菜单节点就没有了，重新调用加载数据
-          this.loadRoleMenu()
         }
       })
       
     },
     /* 取消 */
-    update_peopleDialogFormVisible(state) {
+    update_roleDialogFormVisible (state) {
+      console.log("取消")
       this.$store.dispatch('cancel')
+      // 获取已经设置的资源后渲染
+      this.$refs.menuTree.setCheckedKeys(this.form.checkmenudata)
     },
     /* 加载所有菜单节点 */
-    loadRoleMenu() {
+    loadRoleMenu () {
       this.$ajax.loadRoleMenu('').then(res => {
         this.$store.dispatch('loadMenu', res.content)
       })
     }
-
-
   }
 }
 </script>

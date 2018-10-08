@@ -27,7 +27,7 @@ axios.interceptors.request.use(
    background: 'rgba(0, 0, 0, 0.7)'
   })
   // 给请求头加上token
-  if(window.localStorage.getItem('token')){
+  if (window.localStorage.getItem('token')) {
     config.headers.Authorization = window.localStorage.getItem('token')
   }
   // 序列化

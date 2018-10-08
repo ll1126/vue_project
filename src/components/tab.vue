@@ -23,9 +23,9 @@ export default {
 
     }
   },
-  //检测到数据发生变动时就会执行对相应数据有引用的函数
-  computed:{
-    tabList(){
+  // 检测到数据发生变动时就会执行对相应数据有引用的函数
+  computed: {
+    tabList() {
       return this.$store.state.tabList.tabList
     },
     activeName: {
@@ -35,23 +35,23 @@ export default {
       },
       // setter
       set: function (newValue) {
-          this.$store.state.tabList.activeName = newValue;
+          this.$store.state.tabList.activeName = newValue
       }
     }
   },
   methods: {
     // 切换Tab页
-    handleClick(tab, event) {
+    handleClick (tab, event) {
       this.routerPush(tab.name)
     },
     // 删除tab
-    removeTab(name) {
+    removeTab (name) {
       // 调用store里的 remove_tab 删除标签页
-      this.$store.commit('remove_tab',name)
+      this.$store.commit('remove_tab', name)
       this.routerPush(this.activeName)
     },
     // 切换路由
-    routerPush(name) {
+    routerPush (name) {
       var tabList = this.$store.state.tabList.tabList
       var tabLength = tabList.length
       while (tabLength--) {
@@ -59,7 +59,7 @@ export default {
           // 改变路由
           console.log('改变路由后的路径↓')
           console.log(tabList[tabLength].path)
-          this.$router.push({path: tabList[tabLength].path});
+          this.$router.push({path: tabList[tabLength].path})
           return
         }
       }

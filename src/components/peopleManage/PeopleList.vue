@@ -52,8 +52,8 @@
           label="操作"
           width="300px">
           <template slot-scope="scope">
-            <el-button type="success" size="small" @click="updateUserState(scope.$index, scope.row)" v-if="scope.row.state === 1">启用</el-button>
-            <el-button type="warning" size="small" @click="updateUserState(scope.$index, scope.row)" v-if="scope.row.state === 0">禁用</el-button>
+            <el-button type="success" size="small" @click="updateUserState(scope.$index, scope.row)" v-if="scope.row.state == 1">启用</el-button>
+            <el-button type="warning" size="small" @click="updateUserState(scope.$index, scope.row)" v-if="scope.row.state == 0">禁用</el-button>
             <el-button type="danger" size="small" @click="delPeople(scope.$index, scope.row)">删除</el-button>
             <el-button type="primary" size="small" @click="updatePeople(scope.$index, scope.row)">编辑</el-button>
           </template>
@@ -78,11 +78,11 @@
 </template>
 
 <script>
-import addPeople from './AddPeople'  //引入组件
+import addPeople from './AddPeople'  // 引入组件
 
 export default {
   name: 'peopleList',
-  components: {   //注册组件
+  components: {   // 注册组件
     addPeople
   },
   data () {
@@ -99,21 +99,21 @@ export default {
     this.loadTableRole()
   },
   methods: {
-    //每页多少条发生改变时触发
-    handleSizeChange(val) {
+    // 每页多少条发生改变时触发
+    handleSizeChange (val) {
       console.log(`每页 ${val} 条`);
     },
-    //第几页发生改变时触发
-    handleCurrentChange(val) {
+    // 第几页发生改变时触发
+    handleCurrentChange (val) {
       console.log(`当前页: ${val}`);
     },
-    //点击添加菜单(修改状态位true)
-    update_peopleDialogFormVisible(state){
+    // 点击添加菜单(修改状态位true)
+    update_peopleDialogFormVisible (state) {
       this.$store.commit('update_peopleDialogFormVisible',state)
     },
     // 加载表格数据（所有角色）
     loadTableRole () {
-      let params={
+      let params = {
         pageNum: this.page,
         pageSize: this.pageSize
       }
@@ -125,20 +125,20 @@ export default {
         $this.total = res.content.totalRows
       })
     },
-    //删除
-    delPeople(index, row){
+    // 删除
+    delPeople (index, row) {
       console.log(index);
       console.log(row);
     },
-    //编辑
-    updatePeople(index, row){
-      this.$store.dispatch('updatePeople',row)
+    // 编辑
+    updatePeople (index, row) {
+      this.$store.dispatch('updatePeople', row)
     },
     // 修改用户状态
     updateUserState (index, row) {
-      //弹窗提示是否禁用启用
+      // 弹窗提示是否禁用启用
       var $this = this
-      var mes = row.state==0?'此操作将禁用该用户, 是否继续?':'此操作将启用该用户, 是否继续?'
+      var mes = row.state == 0 ? '此操作将禁用该用户, 是否继续?':'此操作将启用该用户, 是否继续?'
       this.$confirm(mes, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -154,7 +154,7 @@ export default {
           $this.loadTableRole()
           this.$message({
             type: 'success',
-            message: row.state==0?'禁用成功':'启用成功'
+            message: row.state == 0 ? '禁用成功':'启用成功'
           });
         })
         
@@ -165,18 +165,18 @@ export default {
         });
       });
     },
-    //类型转换成字
-    formatterState(row, column, cellValue) {
-      if(cellValue==0){
+    // 类型转换成字
+    formatterState (row, column, cellValue) {
+      if (cellValue==0) {
         return '启用'
-      }else{
+      } else {
         return <span style="color: #F56C6C">禁用</span>
       }
     },
     formatterSex (row, column, cellValue) {
-      if(cellValue==0){
+      if (cellValue == 0) {
         return '男'
-      }else{
+      } else {
         return '女'
       }
     }
