@@ -46,31 +46,31 @@
 export default {
   name: 'addMenu',
   data () {
-    return{
+    return {
       options: [],
       formLabelWidth: '120px'
     }
   },
   // 检测到数据发生变动时就会执行对相应数据有引用的函数
-  computed:{
+  computed: {
     peopleDialogFormVisible: {
       // getter
       get () {
-       return this.$store.state.people.peopleDialogFormVisible
+        return this.$store.state.people.peopleDialogFormVisible
       },
       // setter
       set: function (newValue) {
-         this.$store.state.people.peopleDialogFormVisible = newValue;
+        this.$store.state.people.peopleDialogFormVisible = newValue
       }
     },
     form: {
-       // getter
+      // getter
       get () {
-       return this.$store.state.people.form
+        return this.$store.state.people.form
       },
       // setter
       set: function (newValue) {
-         this.$store.state.people.form = newValue
+        this.$store.state.people.form = newValue
       }
     }
   },
@@ -88,17 +88,17 @@ export default {
         managerName: this.$store.state.people.form.managerName,
         managerPhone: this.$store.state.people.form.managerPhone,
         managerSex: this.$store.state.people.form.managerSex,
-        state: this.$store.state.people.form.state == true ? 0:1,
+        state: this.$store.state.people.form.state === true ? 0 : 1,
         roleId: this.$store.state.people.form.value,
         isUpdate: this.$store.state.people.form.isUpdate
       }
       var $this = this
       this.$ajax.insertUser(params).then(res => {
-        if (res.code == 0) {
+        if (res.code === 0) {
           this.$message({
             message: res.message,
             type: 'success'
-          });
+          })
           this.$store.dispatch('onSubmit')
           // 重新加载表格数据
           $this.$parent.loadTableRole()
@@ -106,7 +106,6 @@ export default {
           this.$message.error(res.message)
         }
       })
-      
     },
     /* 取消 */
     update_peopleDialogFormVisible (state) {
@@ -119,8 +118,6 @@ export default {
         $this.options = res.content
       })
     }
-
-
   }
 }
 </script>

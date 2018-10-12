@@ -21,7 +21,7 @@ export default {
     },
     /* 编辑框给默认值 */
     update_people_form (state, form) {
-      state.form.id = form.id,
+      state.form.id = form.id
       state.form.managerName = form.managerName
       state.form.managerPhone = form.managerPhone
       state.form.managerSex = form.managerSex
@@ -32,7 +32,7 @@ export default {
     },
     /* 清空默认值 */
     empty (state) {
-      state.form.id = '',
+      state.form.id = ''
       state.form.managerName = ''
       state.form.managerPhone = ''
       state.form.managerSex = 0

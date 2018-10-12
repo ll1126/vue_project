@@ -78,11 +78,13 @@
 </template>
 
 <script>
-import addPeople from './AddPeople'  // 引入组件
+// 引入组件
+import addPeople from './AddPeople'
 
 export default {
   name: 'peopleList',
-  components: {   // 注册组件
+  // 注册组件
+  components: {
     addPeople
   },
   data () {
@@ -90,7 +92,7 @@ export default {
       tableData: [],
       page: 1,
       total: 0,
-      pageSize: 10,
+      pageSize: 10
     }
   },
   // 页面加载完成调用
@@ -101,15 +103,15 @@ export default {
   methods: {
     // 每页多少条发生改变时触发
     handleSizeChange (val) {
-      console.log(`每页 ${val} 条`);
+      // console.log(`每页 ${val} 条`);
     },
     // 第几页发生改变时触发
     handleCurrentChange (val) {
-      console.log(`当前页: ${val}`);
+      // console.log(`当前页: ${val}`);
     },
     // 点击添加菜单(修改状态位true)
     update_peopleDialogFormVisible (state) {
-      this.$store.commit('update_peopleDialogFormVisible',state)
+      this.$store.commit('update_peopleDialogFormVisible', state)
     },
     // 加载表格数据（所有角色）
     loadTableRole () {
@@ -119,16 +121,25 @@ export default {
       }
       var $this = this
       this.$ajax.loadTableUser(params).then(res => {
-        //表格数据
+        // 表格数据
         $this.tableData = res.content.pageList
-        //总条数
+        // 总条数
         $this.total = res.content.totalRows
       })
     },
     // 删除
     delPeople (index, row) {
-      console.log(index);
-      console.log(row);
+      let params = {
+        id: row.id
+      }
+      this.$ajax.delUser(params).then(res => {
+        // 重新加载表格数据
+        this.loadTableRole()
+        this.$message({
+          type: res.code === 0 ? 'success' : 'error',
+          message: res.message
+        })
+      })
     },
     // 编辑
     updatePeople (index, row) {
@@ -138,43 +149,42 @@ export default {
     updateUserState (index, row) {
       // 弹窗提示是否禁用启用
       var $this = this
-      var mes = row.state == 0 ? '此操作将禁用该用户, 是否继续?':'此操作将启用该用户, 是否继续?'
+      var mes = row.state === 0 ? '此操作将禁用该用户, 是否继续?' : '此操作将启用该用户, 是否继续?'
       this.$confirm(mes, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-          center: true
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        center: true
       }).then(() => {
-        let params={
+        let params = {
           id: row.id,
-          state: row.state==0?1:0,
+          state: row.state === 0 ? 1 : 0,
           isUpdate: 1
         }
         this.$ajax.insertUser(params).then(res => {
           $this.loadTableRole()
           this.$message({
             type: 'success',
-            message: row.state == 0 ? '禁用成功':'启用成功'
-          });
+            message: row.state === 0 ? '禁用成功' : '启用成功'
+          })
         })
-        
       }).catch(() => {
         this.$message({
           type: 'info',
           message: '已取消操作'
-        });
-      });
+        })
+      })
     },
     // 类型转换成字
     formatterState (row, column, cellValue) {
-      if (cellValue==0) {
+      if (cellValue === 0) {
         return '启用'
       } else {
         return <span style="color: #F56C6C">禁用</span>
       }
     },
     formatterSex (row, column, cellValue) {
-      if (cellValue == 0) {
+      if (cellValue === 0) {
         return '男'
       } else {
         return '女'
@@ -183,7 +193,6 @@ export default {
 
   }
 }
-
 
 </script>
 

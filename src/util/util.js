@@ -7,5 +7,10 @@ export default {
             type: 'warning',
             center: true
         })
+    },
+    logout: function() {
+        window.localStorage.removeItem('token')
+        window.localStorage.removeItem('userName')
+        this.$router.push({path: '/Login'})
     }
 }

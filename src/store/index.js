@@ -6,6 +6,7 @@ import tabList from './modules/tabList.js'
 import menu from './modules/menu.js'
 import people from './modules/people.js'
 import role from './modules/role.js'
+import header from './modules/header.js'
 
 Vue.use(vuex)
 export default new vuex.Store({
@@ -13,6 +14,7 @@ export default new vuex.Store({
     tabList: tabList,
     menu: menu,
     people: people,
-    role: role
+    role: role,
+    header: header
   }
 })

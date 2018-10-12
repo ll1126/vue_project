@@ -67,11 +67,13 @@
 </template>
 
 <script>
-import addRole from './addRole'  // 引入组件
+// 引入组件
+import addRole from './AddRole'
 
 export default {
   name: 'roleList',
-  components: {   // 注册组件
+  // 注册组件
+  components: {
     addRole
   },
   data () {
@@ -79,7 +81,7 @@ export default {
       tableData: [],
       page: 1,
       total: 0,
-      pageSize: 10,
+      pageSize: 10
     }
   },
   // 页面加载完成调用
@@ -90,11 +92,11 @@ export default {
   methods: {
     // 每页多少条发生改变时触发
     handleSizeChange (val) {
-      console.log(`每页 ${val} 条`);
+      console.log(`每页 ${val} 条`)
     },
     // 第几页发生改变时触发
     handleCurrentChange (val) {
-      console.log(`当前页: ${val}`);
+      console.log(`当前页: ${val}`)
     },
     // 点击添加菜单(修改状态位true)
     update_roleDialogFormVisible (state) {
@@ -102,7 +104,7 @@ export default {
     },
     // 加载表格数据（所有角色）
     loadTableRole () {
-      let params={
+      let params = {
         pageNum: this.page,
         pageSize: this.pageSize
       }
@@ -122,11 +124,11 @@ export default {
       }
       var $this = this
       this.$ajax.delRole(params).then(res => {
-        if (res.code == 0) {
+        if (res.code === 0) {
           this.$message({
             message: res.message,
             type: 'success'
-          });
+          })
           // 重新加载表格数据
           $this.loadTableRole()
         }
@@ -135,51 +137,47 @@ export default {
     // 编辑
     updateRole (index, row) {
       this.$store.dispatch('updateRole', row)
-
     },
     // 启用 / 禁用
     updateRoleState (index, row) {
       // 弹窗提示是否禁用启用
       var $this = this
-      var mes = row.state == 0 ? '此操作将禁用该角色, 是否继续?':'此操作将启用该角色, 是否继续?'
+      var mes = row.state === 0 ? '此操作将禁用该角色, 是否继续?' : '此操作将启用该角色, 是否继续?'
       this.$confirm(mes, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning',
-          center: true
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        center: true
       }).then(() => {
-          let params = {
-            id: row.id,
-            fstate: row.fstate == 0 ? 1:0,
-            isUpdate: 1
-          }
-          this.$ajax.insertRole(params).then(res => {
-            $this.loadTableRole()
-            this.$message({
-              type: 'success',
-              message: row.state == 0 ? '禁用成功':'启用成功'
-            });
+        let params = {
+          id: row.id,
+          fstate: row.fstate === 0 ? 1 : 0,
+          isUpdate: 1
+        }
+        this.$ajax.insertRole(params).then(res => {
+          $this.loadTableRole()
+          this.$message({
+            type: 'success',
+            message: row.fstate === 0 ? '禁用成功' : '启用成功'
           })
+        })
       }).catch(() => {
         this.$message({
           type: 'info',
           message: '已取消操作'
-        });
-      });
+        })
+      })
     },
     // 类型转换成字
     formatterState (row, column, cellValue) {
-      if (cellValue == 0) {
+      if (cellValue === 0) {
         return '启用'
       } else {
         return <span style="color: #F56C6C">禁用</span>
       }
     }
-
   }
 }
-
-
 </script>
 
 <style scoped>

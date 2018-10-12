@@ -17,13 +17,13 @@ export default {
       tab.name = obj.onclickName
       tab.path = obj.onclickPath
       /* tab标签页没存在时添加一个 */
-      console.log('选中的标签名字↓')
-      console.log(tab)
+      // console.log('选中的标签名字↓')
+      // console.log(tab)
       if (!contains(state.tabList, tab)) {
         state.tabList.push(tab)
       }
-      console.log('已打开的标签↓')
-      console.log(state.tabList)
+      // console.log('已打开的标签↓')
+      // console.log(state.tabList)
       /* 默认选中 */
       state.activeName = obj.onclickName
     },

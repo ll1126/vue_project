@@ -38,7 +38,7 @@
 export default {
   name: 'addRole',
   data () {
-    return{
+    return {
       formLabelWidth: '120px',
       defaultProps: {
         children: 'children',
@@ -51,24 +51,23 @@ export default {
     roleDialogFormVisible: {
       // getter
       get () {
-       return this.$store.state.role.roleDialogFormVisible
+        return this.$store.state.role.roleDialogFormVisible
       },
       // setter
       set: function (newValue) {
-         this.$store.state.role.roleDialogFormVisible = newValue
+        this.$store.state.role.roleDialogFormVisible = newValue
       }
     },
     form: {
-       // getter
+      // getter
       get () {
-       return this.$store.state.role.form
+        return this.$store.state.role.form
       },
       // setter
       set: function (newValue) {
-         this.$store.state.role.form = newValue;
+        this.$store.state.role.form = newValue
       }
     }
-
   },
   // 页面加载完成调用
   mounted () {
@@ -91,26 +90,25 @@ export default {
         // 选中的菜单id（字符串，用 ',' 拼接）
         checkMenu: c,
         // 是否启用 0：启用 1：禁用
-        fstate: this.$store.state.role.form.state == true ? 0:1,
+        fstate: this.$store.state.role.form.state === true ? 0 : 1,
         isUpdate: this.$store.state.role.form.isUpdate
       }
-      //访问接口
+      // 访问接口
       this.$ajax.insertRole(params).then(res => {
-        if (res.code == 0) {
+        if (res.code === 0) {
           this.$message({
             message: res.message,
             type: 'success'
-          });
+          })
           this.$store.dispatch('onSubmit')
           // 重新加载外面表格数据
           this.$parent.loadTableRole()
         }
       })
-      
     },
     /* 取消 */
     update_roleDialogFormVisible (state) {
-      console.log("取消")
+      // console.log("取消")
       this.$store.dispatch('cancel')
       // 获取已经设置的资源后渲染
       this.$refs.menuTree.setCheckedKeys(this.form.checkmenudata)

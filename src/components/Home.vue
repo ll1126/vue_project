@@ -22,8 +22,6 @@ export default {
     /* 方法区 */
   }
 }
-
-
 </script>
 
 <style scoped>

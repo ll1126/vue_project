@@ -40,7 +40,7 @@ export default new Router({
           path: 'RoleManage',
           name: 'RoleList',
           component: RoleList
-        },
+        }
       ]
     },
     { /* 放在最后防止空白或404 */

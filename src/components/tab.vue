@@ -2,7 +2,7 @@
   <div id="tab">
     <!-- 展示Tab标签 -->
     <div>
-        <el-tabs v-model="activeName" type="card" closable  @tab-remove="removeTab" @tab-click="handleClick">
+        <el-tabs v-model="activeName" type="card" closable @tab-remove="removeTab" @tab-click="handleClick">
             <el-tab-pane
                 :key="tab.name"
                 v-for="(tab) in tabList"
@@ -25,7 +25,7 @@ export default {
   },
   // 检测到数据发生变动时就会执行对相应数据有引用的函数
   computed: {
-    tabList() {
+    tabList () {
       return this.$store.state.tabList.tabList
     },
     activeName: {
@@ -35,7 +35,7 @@ export default {
       },
       // setter
       set: function (newValue) {
-          this.$store.state.tabList.activeName = newValue
+        this.$store.state.tabList.activeName = newValue
       }
     }
   },
@@ -57,13 +57,12 @@ export default {
       while (tabLength--) {
         if (tabList[tabLength].name === name) {
           // 改变路由
-          console.log('改变路由后的路径↓')
-          console.log(tabList[tabLength].path)
+          // console.log('改变路由后的路径↓')
+          // console.log(tabList[tabLength].path)
           this.$router.push({path: tabList[tabLength].path})
           return
         }
       }
-      return
     }
   }
 }

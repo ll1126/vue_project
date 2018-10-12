@@ -25,7 +25,7 @@ export default {
       state.form.rolename = form.cname
       state.form.state = form.fstate === 0
       state.form.value = form.roleName
-      state.form.checkmenudata = form.menuData.split(",")
+      state.form.checkmenudata = form.menuData.split(',')
       /* isUpdate:0 新增  1： 修改 */
       state.form.isUpdate = 1
     },
@@ -40,7 +40,7 @@ export default {
     /* 加载菜单节点 */
     loadMenu (state, menudata) {
       state.form.menudata = menudata
-    },
+    }
   },
   actions: {
     updateRole (context, form) {
@@ -63,7 +63,7 @@ export default {
       context.commit('empty')
     },
     /* 加载菜单节点 */
-    loadMenu (context,menudata) {
+    loadMenu (context, menudata) {
       context.commit('loadMenu', menudata)
     }
   }

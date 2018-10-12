@@ -1,7 +1,7 @@
 <template>
   <div id="main">
     <!-- 头部 -->
-    <MyHeader ></MyHeader>
+    <MyHeader></MyHeader>
     <section class="el-container">
       <!-- 左侧导航 -->
       <MyMenu></MyMenu>
@@ -11,20 +11,25 @@
         <main class="el-main">
           <!-- 展示子页面 -->
           <div>
-              <!-- 根据路由展示 -->
-             <router-view/>
+            <!-- 根据路由展示 -->
+            <keep-alive>
+              <!-- 使用keep-alive会将页面缓存 -->
+              <router-view/>
+            </keep-alive>
           </div>
         </main>
       </section>
     </section>
   </div>
 </template>
-
 <script>
-import MyHeader from '@/components/Header'  // 引入头部组件
-import MyMenu from '@/components/Menu'  // 引入左侧导航组件
-import MyTab from '@/components/tab'  // 引入标签页组件
 
+// 引入头部组件
+import MyHeader from '@/components/Header'
+// 引入左侧导航组件
+import MyMenu from '@/components/Menu'
+// 引入标签页组件
+import MyTab from '@/components/tab'
 
 export default {
   // 注册组件
@@ -33,17 +38,14 @@ export default {
     MyMenu,
     MyTab
   },
-  name: 'main',
+  name: 'v-main',
   data () {
     return {
 
     }
   },
   methods: {
-
   }
-
 }
 
 </script>
-
