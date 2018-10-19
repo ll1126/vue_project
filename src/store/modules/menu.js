@@ -13,7 +13,9 @@ export default {
     dialogFormVisible: false,
     fparentid: 0,
     type: '添加菜单',
-    isUpdate: false
+    isUpdate: false,
+    // 0 菜单  1 按钮
+    isButton: 0
   },
   mutations: {
     update_dialogTableVisible_State (state, tableState) {
@@ -25,6 +27,7 @@ export default {
       state.dialogFormVisible = params.state
       state.type = '添加菜单'
       state.isUpdate = false
+      state.isButton = params.isButton
     },
     // 编辑框给默认值
     update_menu (state, menu) {

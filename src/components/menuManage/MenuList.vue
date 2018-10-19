@@ -132,7 +132,8 @@ export default {
       var $this = this
       let params = {
         state: state,
-        parentId: $this.parentId
+        parentId: $this.parentId,
+        isButton: $this.button_state === false ? 0 : 1
       }
       this.$store.commit('update_dialogFormVisible', params)
     },
@@ -200,6 +201,7 @@ export default {
         this.return_lastMune_state = true
       }
       this.button_state = false
+      this.$store.state.menu.fparentid = this.parentId
     },
     // 类型转换成字
     formatterState (row, column, cellValue) {

@@ -92,11 +92,17 @@ export default {
       tableData: [],
       page: 1,
       total: 0,
-      pageSize: 10
+      pageSize: 10,
+      // 全部按钮状态
+      buttonState: {
+        disableButton: false
+      }
     }
   },
   // 页面加载完成调用
   mounted () {
+    // 加载按钮状态
+    this.loadButtonState()
     // 加载表格数据
     this.loadTableRole()
   },
@@ -174,6 +180,10 @@ export default {
           message: '已取消操作'
         })
       })
+    },
+    // 加载按钮状态
+    loadButtonState () {
+      this.buttonState.disableButton = this.$store.state.buttonState.peopleManage.disable
     },
     // 类型转换成字
     formatterState (row, column, cellValue) {

@@ -5,7 +5,7 @@
         <el-form-item label="菜单名称" :label-width="formLabelWidth">
           <el-input v-model="menu.menuName" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="链接地址" :label-width="formLabelWidth">
+        <el-form-item :label="this.$store.state.menu.isButton == 0 ? '菜单路由' : '按钮标识'" :label-width="formLabelWidth">
           <el-input v-model="menu.menuUrl" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="图标" :label-width="formLabelWidth">
@@ -78,8 +78,9 @@ export default {
     update_dialogFormVisible (state) {
       var $this = this
       // 添加时 赋值父节点id
+      var fparentid
       if (!this.$store.state.menu.idUpdate) {
-        $this.menu.fparentid = this.$store.state.menu.fparentid
+        fparentid = this.$store.state.menu.fparentid
       }
       // 访问接口保存数据
       let params = {
@@ -89,7 +90,9 @@ export default {
         clconpic: this.$store.state.menu.menu.clconpic,
         fsort: this.$store.state.menu.menu.fsort,
         fstate: this.$store.state.menu.menu.fstate === true ? 0 : 1,
-        isUpdate: this.$store.state.menu.isUpdate
+        isUpdate: this.$store.state.menu.isUpdate,
+        isButton: this.$store.state.menu.isButton,
+        fparentid: fparentid
       }
       this.$ajax.insertMenu(params).then(res => {
         if (res.code === 0) {
@@ -100,7 +103,7 @@ export default {
           // 隐藏窗口
           $this.$store.commit('update_dialogFormVisible', {state: state})
           // 重新加载表格数据
-          $this.$parent.loadTableMenu($this.menu.fparentid)
+          $this.$parent.loadTableMenu(fparentid)
           // 清空之前数据
           $this.empty()
         } else {
@@ -114,7 +117,7 @@ export default {
       this.menu.menuUrl = ''
       this.menu.clconpic = ''
       this.menu.fsort = ''
-      this.menu.fstate = 0
+      this.menu.fstate = true
     }
   }
 }
