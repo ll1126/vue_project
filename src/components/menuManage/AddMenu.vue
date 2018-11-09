@@ -1,6 +1,6 @@
 <template>
   <div id='addMenu'>
-    <el-dialog :title="type" :visible.sync="dialogFormVisible">
+    <el-dialog :title="type" :visible.sync="dialogFormVisible" @close="menu_dialogClose()">
       <el-form :model="menu">
         <el-form-item label="菜单名称" :label-width="formLabelWidth">
           <el-input v-model="menu.menuName" auto-complete="off"></el-input>
@@ -25,8 +25,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="update_dialogFormVisible(false)">取 消</el-button>
-        <el-button type="primary" @click="update_dialogFormVisible(false)">确 定</el-button>
+        <el-button @click="menu_dialogClose()">取 消</el-button>
+        <el-button type="primary" @click="save(false)">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -74,15 +74,15 @@ export default {
     }
   },
   methods: {
-    // 修改store仓库的 dialogFormVisible 的值
-    update_dialogFormVisible (state) {
+    // 保存
+    save (state) {
       var $this = this
       // 添加时 赋值父节点id
       var fparentid
       if (!this.$store.state.menu.idUpdate) {
         fparentid = this.$store.state.menu.fparentid
       }
-      // 访问接口保存数据
+      // 参数
       let params = {
         id: this.$store.state.menu.menu.id,
         menuName: this.$store.state.menu.menu.menuName,
@@ -94,30 +94,25 @@ export default {
         isButton: this.$store.state.menu.isButton,
         fparentid: fparentid
       }
+      // 访问接口保存数据
       this.$ajax.insertMenu(params).then(res => {
         if (res.code === 0) {
           this.$message({
             message: res.message,
             type: 'success'
           })
-          // 隐藏窗口
-          $this.$store.commit('update_dialogFormVisible', {state: state})
+          // 关闭dialog并清空dialog里的数据
+          $this.menu_dialogClose()
           // 重新加载表格数据
           $this.$parent.loadTableMenu(fparentid)
-          // 清空之前数据
-          $this.empty()
         } else {
           this.$message.error(res.message)
         }
       })
     },
-    // 清空值
-    empty () {
-      this.menu.menuName = ''
-      this.menu.menuUrl = ''
-      this.menu.clconpic = ''
-      this.menu.fsort = ''
-      this.menu.fstate = true
+    /** dialog关闭执行 */
+    menu_dialogClose () {
+      this.$store.dispatch('menu_dialogClose')
     }
   }
 }

@@ -6,7 +6,7 @@ import Home from '@/components/Home'
 import MenuList from '@/components/menuManage/MenuList'
 import PeopleList from '@/components/peopleManage/PeopleList'
 import RoleList from '@/components/roleManage/RoleList'
-
+import baiduMap from '@/components/demo/baiduMap'
 Vue.use(Router)
 
 export default new Router({
@@ -40,6 +40,11 @@ export default new Router({
           path: 'RoleManage',
           name: 'RoleList',
           component: RoleList
+        },
+        {
+          path: 'baiduMap',
+          name: 'baiduMap',
+          component: baiduMap
         }
       ]
     },

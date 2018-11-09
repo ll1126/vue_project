@@ -25,7 +25,9 @@ export default {
       state.form.rolename = form.cname
       state.form.state = form.fstate === 0
       state.form.value = form.roleName
-      state.form.checkmenudata = form.menuData.split(',')
+      if (form.menuData !== null && form.menuData !== '') {
+        state.form.checkmenudata = form.menuData.split(',')
+      }
       /* isUpdate:0 新增  1： 修改 */
       state.form.isUpdate = 1
     },
@@ -50,13 +52,6 @@ export default {
       context.commit('update_roleDialogFormVisible', true)
     },
     cancel (context) {
-      /* 关闭弹出框 */
-      context.commit('update_roleDialogFormVisible', false)
-      /* 清空默认值 */
-      context.commit('empty')
-    },
-    /* 保存 */
-    onSubmit (context) {
       /* 关闭弹出框 */
       context.commit('update_roleDialogFormVisible', false)
       /* 清空默认值 */

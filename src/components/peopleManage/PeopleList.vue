@@ -110,10 +110,12 @@ export default {
     // 每页多少条发生改变时触发
     handleSizeChange (val) {
       // console.log(`每页 ${val} 条`);
+      this.loadTableRole()
     },
     // 第几页发生改变时触发
     handleCurrentChange (val) {
       // console.log(`当前页: ${val}`);
+      this.loadTableRole()
     },
     // 点击添加菜单(修改状态位true)
     update_peopleDialogFormVisible (state) {
@@ -139,12 +141,14 @@ export default {
         id: row.id
       }
       this.$ajax.delUser(params).then(res => {
-        // 重新加载表格数据
-        this.loadTableRole()
         this.$message({
           type: res.code === 0 ? 'success' : 'error',
           message: res.message
         })
+        if(res.code === 0){
+          // 重新加载表格数据
+          this.loadTableRole()
+          }
       })
     },
     // 编辑

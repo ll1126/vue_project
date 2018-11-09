@@ -1,35 +1,39 @@
 <template>
   <div id='addRole'>
-    <el-dialog title="添加角色" :visible.sync="roleDialogFormVisible">
-      <el-form :model="form">
-        <el-form-item label="角色名称" :label-width="formLabelWidth">
-          <el-input v-model="form.rolename" auto-complete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="状态" :label-width="formLabelWidth">
-          <el-switch
-            v-model="form.state"
-            active-color="#13ce66"
-            inactive-color="#ff4949"
-            active-text="启用"
-            inactive-text="禁用">
-          </el-switch>
-        </el-form-item>
-        <el-form-item label="角色权限" :label-width="formLabelWidth">
-          <el-tree
-            :data="form.menudata"
-            show-checkbox
-            node-key="id"
-            ref="menuTree"
-            :default-expanded-keys="[1, 1]"
-            :default-checked-keys="form.checkmenudata"
-            :props="defaultProps">
-          </el-tree>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="update_roleDialogFormVisible(false)">取 消</el-button>
-        <el-button type="primary" @click="onSubmit">确 定</el-button>
-      </div>
+    <el-dialog title="添加角色" :visible.sync="roleDialogFormVisible" @close="role_dialogClose()">
+        <el-form :model="form">
+          <!-- 滚动条 -->
+          <el-scrollbar>
+          <el-form-item label="角色名称" :label-width="formLabelWidth">
+            <el-input v-model="form.rolename" auto-complete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="状态" :label-width="formLabelWidth">
+            <el-switch
+              v-model="form.state"
+              active-color="#13ce66"
+              inactive-color="#ff4949"
+              active-text="启用"
+              inactive-text="禁用">
+            </el-switch>
+          </el-form-item>
+          <el-form-item label="角色权限" :label-width="formLabelWidth">
+              <el-tree
+                :data="form.menudata"
+                show-checkbox
+                node-key="id"
+                ref="menuTree"
+                :default-expand-all="true"
+                :default-expanded-keys="[1, 1]"
+                :default-checked-keys="form.checkmenudata"
+                :props="defaultProps">
+              </el-tree>
+          </el-form-item>
+          </el-scrollbar>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="role_dialogClose()">取 消</el-button>
+          <el-button type="primary" @click="onSubmit">确 定</el-button>
+        </div>
     </el-dialog>
   </div>
 </template>
@@ -100,25 +104,32 @@ export default {
             message: res.message,
             type: 'success'
           })
-          this.$store.dispatch('onSubmit')
+          /** 清空数据并关闭dialog */
+          this.$store.dispatch('cancel')
           // 重新加载外面表格数据
           this.$parent.loadTableRole()
         }
       })
-    },
-    /* 取消 */
-    update_roleDialogFormVisible (state) {
-      // console.log("取消")
-      this.$store.dispatch('cancel')
-      // 获取已经设置的资源后渲染
-      this.$refs.menuTree.setCheckedKeys(this.form.checkmenudata)
     },
     /* 加载所有菜单节点 */
     loadRoleMenu () {
       this.$ajax.loadRoleMenu('').then(res => {
         this.$store.dispatch('loadMenu', res.content)
       })
+    },
+    /** dialog关闭时触发 */
+    role_dialogClose () {
+      /** 清空数据并关闭dialog */
+      this.$store.dispatch('cancel')
+      // 获取已经设置的资源后渲染
+      this.$refs.menuTree.setCheckedKeys(this.form.checkmenudata)
     }
   }
 }
 </script>
+<style>
+  .el-scrollbar .el-scrollbar__wrap {
+    height: 500px;
+    overflow-x: hidden;
+  }
+</style>

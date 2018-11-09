@@ -92,11 +92,11 @@ export default {
   methods: {
     // 每页多少条发生改变时触发
     handleSizeChange (val) {
-      console.log(`每页 ${val} 条`)
+      this.loadTableRole()
     },
     // 第几页发生改变时触发
     handleCurrentChange (val) {
-      console.log(`当前页: ${val}`)
+      this.loadTableRole()
     },
     // 点击添加菜单(修改状态位true)
     update_roleDialogFormVisible (state) {
@@ -114,7 +114,6 @@ export default {
         $this.tableData = res.content.pageList
         // 总条数
         $this.total = res.content.totalRows
-        // console.log(res.content.pageList)
       })
     },
     // 删除
@@ -124,14 +123,14 @@ export default {
       }
       var $this = this
       this.$ajax.delRole(params).then(res => {
-        if (res.code === 0) {
           this.$message({
             message: res.message,
-            type: 'success'
+            type:  res.code === 0 ? 'success' : 'error'
           })
-          // 重新加载表格数据
-          $this.loadTableRole()
-        }
+          if(res.code === 0){
+            // 重新加载表格数据
+            $this.loadTableRole()
+          }
       })
     },
     // 编辑

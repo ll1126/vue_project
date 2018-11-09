@@ -29,7 +29,6 @@ export default {
       return this.$store.state.tabList.tabList
     },
     activeName: {
-      // return this.$store.state.tabList.activeName
       get () {
         return this.$store.state.tabList.activeName
       },

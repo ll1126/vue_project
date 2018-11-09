@@ -59,6 +59,11 @@ export default {
       context.commit('update_menu', menu)
       /* 显示弹出框 */
       context.commit('update_dialogTableVisible_State', true)
+    },
+    menu_dialogClose (context) {
+      // 清空值
+      context.commit('empty')
+      context.commit('update_dialogTableVisible_State', false)
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div id='addMenu'>
-    <el-dialog title="添加人员" :visible.sync="peopleDialogFormVisible">
+    <el-dialog title="添加人员" :visible.sync="peopleDialogFormVisible" @close="people_dialogClose()">
       <el-form :model="form">
         <el-form-item label="角色" :label-width="formLabelWidth">
          <el-select v-model="form.value" placeholder="请选择">
@@ -35,7 +35,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="update_peopleDialogFormVisible(false)">取 消</el-button>
+        <el-button @click="people_dialogClose()">取 消</el-button>
         <el-button type="primary" @click="onSubmit">确 定</el-button>
       </div>
     </el-dialog>
@@ -108,7 +108,7 @@ export default {
       })
     },
     /* 取消 */
-    update_peopleDialogFormVisible (state) {
+    people_dialogClose () {
       this.$store.dispatch('cancel')
     },
     /* 加载可选角色 */

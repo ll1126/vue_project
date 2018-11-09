@@ -101,11 +101,11 @@ export default {
       total: 0,
       pageSize: 10,
       parentId: 0,
-      // 每次的parentId记录
+      // 每次的parentId记录（【返回上一级菜单】用）
       history_parentId: '',
-      // 返回上一级菜单是否显示  false 显示  true 不显示
+      // 【返回上一级菜单】 是否显示  false 显示  true 不显示
       return_lastMune_state: true,
-      // true 按钮  false 菜单
+      // true：显示【按钮】  false：显示【菜单】
       button_state: false
     }
   },
@@ -127,7 +127,7 @@ export default {
       this.page = val
       this.loadTableMenu(this.parentId)
     },
-    // 点击添加菜单(修改状态位true)
+    // 点击添加菜单(修改状态为true)
     update_dialogFormVisible (state) {
       var $this = this
       let params = {
