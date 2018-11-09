@@ -1,6 +1,21 @@
 <template>
   <div id="peopleList">
-    <el-button type="primary"  @click="update_peopleDialogFormVisible(true)">添加人员</el-button>
+      <label style="margin-left: 20px">名字：</label>
+      <el-input class="queryConditions"
+        size="medium"
+        placeholder="请输入名字"
+        v-model="queryConditions.managerNameLike">
+      </el-input>
+      <lable style="margin-left: 50px">手机号：</lable>
+      <el-input class="queryConditions"
+        size="medium"
+        placeholder="请输入手机号"
+        v-model="queryConditions.managerPhone">
+      </el-input>
+      <el-button type="primary" style="margin-left: 20px;" @click="inquire()">查询</el-button>
+    <div style="margin: 30px 20px">
+      <el-button type="primary" @click="update_peopleDialogFormVisible(true)">添加人员</el-button>
+    </div>
     <div>
       <el-table
       :data="tableData"
@@ -96,6 +111,11 @@ export default {
       // 全部按钮状态
       buttonState: {
         disableButton: false
+      },
+      // 查询条件
+      queryConditions: {
+        managerNameLike: '',
+        managerPhone: ''
       }
     }
   },
@@ -109,12 +129,10 @@ export default {
   methods: {
     // 每页多少条发生改变时触发
     handleSizeChange (val) {
-      // console.log(`每页 ${val} 条`);
       this.loadTableRole()
     },
     // 第几页发生改变时触发
     handleCurrentChange (val) {
-      // console.log(`当前页: ${val}`);
       this.loadTableRole()
     },
     // 点击添加菜单(修改状态位true)
@@ -135,6 +153,24 @@ export default {
         $this.total = res.content.totalRows
       })
     },
+    /** 查询 */
+    inquire () {
+      var $this = this
+      $this.page = 1
+      $this.pagesize = 10
+      let params = {
+        pageNum: $this.page,
+        pageSize: $this.pageSize,
+        managerNameLike: $this.queryConditions.managerNameLike,
+        managerPhone: $this.queryConditions.managerPhone
+      }
+      $this.$ajax.loadTableUser(params).then(res => {
+        // 表格数据
+        $this.tableData = res.content.pageList
+        // 总条数
+        $this.total = res.content.totalRows
+      })
+    },
     // 删除
     delPeople (index, row) {
       let params = {
@@ -145,10 +181,10 @@ export default {
           type: res.code === 0 ? 'success' : 'error',
           message: res.message
         })
-        if(res.code === 0){
+        if (res.code === 0) {
           // 重新加载表格数据
           this.loadTableRole()
-          }
+        }
       })
     },
     // 编辑
@@ -213,5 +249,8 @@ export default {
 <style scoped>
   .block {
     margin-top:20px;
+  }
+  .queryConditions {
+    width: 200px;
   }
 </style>

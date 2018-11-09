@@ -17,7 +17,7 @@ export default {
   loadTableMenu (params) {
     return get('/menu/selAllMenu', params)
   },
-  // 菜单页 -- 添加菜单接口
+  // 菜单页 -- 添加菜单接口 / 修改菜单接口
   insertMenu (params) {
     return post('/menu/insertMenu', params)
   },

@@ -228,8 +228,9 @@ export default {
     },
     // 修改菜单状态 （启用 / 禁用）
     updateMenuState (index, row) {
+      var $this = this
       // 弹窗提示是否禁用启用
-      this.$confirm('此操作将禁用该菜单, 是否继续?', '提示', {
+      this.$confirm('此操作将禁用该菜单, 是否继续?', '温馨提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
@@ -237,13 +238,15 @@ export default {
       }).then(() => {
         let params = {
           id: row.id,
-          fstate: row.fstate === 0 ? 1 : 0
+          fstate: row.fstate === 0 ? 1 : 0,
+          isUpdate: true
         }
-        this.$ajax.updateMenuState(params).then(res => {
+        this.$ajax.insertMenu(params).then(res => {
           this.$message({
             type: 'success',
             message: res.message
           })
+          $this.loadTableMenu($this.parentId)
         })
       }).catch(() => {
         this.$message({
