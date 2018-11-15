@@ -11,7 +11,7 @@ export default {
       value: '',
       menudata: [],
       checkmenudata: [],
-      isUpdate: 0
+      isUpdate: false
     }
   },
   mutations: {
@@ -29,7 +29,7 @@ export default {
         state.form.checkmenudata = form.menuData.split(',')
       }
       /* isUpdate:0 新增  1： 修改 */
-      state.form.isUpdate = 1
+      state.form.isUpdate = true
     },
     /* 清空默认值 */
     empty (state) {

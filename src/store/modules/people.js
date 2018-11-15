@@ -11,7 +11,7 @@ export default {
       managerSex: 0,
       state: true,
       value: '',
-      isUpdate: 0
+      isUpdate: false
     }
   },
   mutations: {
@@ -27,8 +27,8 @@ export default {
       state.form.managerSex = form.managerSex
       state.form.state = form.state === 0
       state.form.value = form.roleId
-      /* isUpdate:0 新增  1： 修改 */
-      state.form.isUpdate = 1
+      /* isUpdate:true 修改  false：新增  */
+      state.form.isUpdate = true
     },
     /* 清空默认值 */
     empty (state) {
@@ -38,7 +38,7 @@ export default {
       state.form.managerSex = 0
       state.form.state = true
       state.form.value = ''
-      state.form.isUpdate = 0
+      state.form.isUpdate = false
     }
   },
   actions: {
