@@ -123,14 +123,14 @@ export default {
       }
       var $this = this
       this.$ajax.delRole(params).then(res => {
-          this.$message({
-            message: res.message,
-            type:  res.code === 0 ? 'success' : 'error'
-          })
-          if(res.code === 0){
-            // 重新加载表格数据
-            $this.loadTableRole()
-          }
+        this.$message({
+          message: res.message,
+          type: res.code === 0 ? 'success' : 'error'
+        })
+        if (res.code === 0) {
+          // 重新加载表格数据
+          $this.loadTableRole()
+        }
       })
     },
     // 编辑
