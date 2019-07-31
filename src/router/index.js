@@ -6,6 +6,8 @@ import Home from '@/components/Home'
 import MenuList from '@/components/menuManage/MenuList'
 import PeopleList from '@/components/peopleManage/PeopleList'
 import RoleList from '@/components/roleManage/RoleList'
+import ProductList from '@/components/productManage/ProductList'
+import StockList from '@/components/stockManage/StockList'
 Vue.use(Router)
 
 export default new Router({
@@ -39,6 +41,16 @@ export default new Router({
           path: 'RoleManage',
           name: 'RoleList',
           component: RoleList
+        },
+        {
+          path: 'ProductManage',
+          name: 'ProductList',
+          component: ProductList
+        },
+        {
+          path: 'StockManage',
+          name: 'StockList',
+          component: StockList
         }
       ]
     },

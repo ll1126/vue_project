@@ -8,6 +8,8 @@ import people from './modules/people.js'
 import role from './modules/role.js'
 import header from './modules/header.js'
 import buttonState from './modules/buttonState.js'
+import product from './modules/product.js'
+import stock from './modules/stock.js'
 
 Vue.use(vuex)
 export default new vuex.Store({
@@ -17,6 +19,8 @@ export default new vuex.Store({
     people: people,
     role: role,
     header: header,
-    buttonState: buttonState
+    buttonState: buttonState,
+    product: product,
+    stock: stock
   }
 })

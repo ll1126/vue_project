@@ -60,5 +60,29 @@ export default {
   // 添加用户页 -- 加载可选角色
   loadRolel (params) {
     return get('/role/loadRole', params)
+  },
+  // 产品页 -- 加载产品列表
+  loadTableProduct (params) {
+    return get('/product/selAllProduct', params)
+  },
+  // 添加产品页 -- 保存产品
+  insertProduct (params) {
+    return post('/product/insertProduct', params)
+  },
+  // 库存页 -- 加载库存列表
+  loadTableStock (params) {
+    return get('/stock/selAllStock', params)
+  },
+  // 添加库存记录页 -- 加载可选产品型号
+  getAllProductModel (params) {
+    return get('/product/selAllProductNotPaging', params)
+  },
+  // 添加库存记录页 -- 添加库存记录
+  insertStock (params) {
+    return post('/stock/saveStock', params)
+  },
+  // 库存页 -- 导出库存记录
+  exportStock (params) {
+    return get('/stock/exportStock', params)
   }
 }
